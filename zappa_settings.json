@@ -1,0 +1,10 @@
+{
+    "prod": {
+        "django_settings": "mmm.settings",
+        "aws_region": "ap-northeast-2",
+        "profile_name": "default",
+        "project_name": "mmm",
+        "runtime": "python3.7",
+        "s3_bucket": "zappa-efsq84m2d"
+    }
+}
