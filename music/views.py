@@ -19,15 +19,34 @@ from rest_framework.decorators import action, api_view
 def ping(request):
     return HttpResponse('pong')
 
+
+def _getBoundsFromLatLng(lat, lng):
+    # 5km 구간
+    lat_change = 5 / 111.2
+    lng_change = abs(math.cos(lat * (math.pi / 180)))
+    bounds = {
+        "lat_min": lat - lat_change,
+        "lng_min": lng - lng_change,
+        "lat_max": lat + lat_change,
+        "lng_max": lng + lng_change
+    }
+    return bounds
 # GET /musics
 def get_musics(request):
-    return HttpResponse('get_musics')
+    longitude = request.GET.get('longitude')
+    latitude = request.GET.get('latitude')
 
-from rest_framework.decorators import action, api_view
+
+    if request.method == 'GET':
 
 
-class UserViewSet(ModelViewSet):
-    queryset = User.objects.all()
+        LC = _getBoundsFromLatLng(float(longitude), float(latitude))
+        qs = MusicLocation.objects.filter(
+            latitude__range=(LC['lat_min'], LC['lat_max'])
+        ).filter(
+            longitude__range=(LC['lng_min'], LC['lng_max'])
+        ).values_list('music__name', 'longitude', 'latitude')
+    return HttpResponse(qs)
 
 
 
@@ -57,5 +76,5 @@ def post_user_memory(request, zeppeto_hash_code):
         # 		sing_name
         # 이거는내노래list보내주기
         user = MusicLocation.objects.select_related('user').filter(user__zeppeto_hash_code=zeppeto_hash_code).values_list('music__name', 'user__musiclocation__latitude','music__musiclocation__longitude')
-
+        data = {'d':user[0]}
         return Response(user)
