@@ -19,6 +19,7 @@ class Music(TimeStampedModel):
     def __str__(self):
         return f'name: {self.name} '
 
+
 class MusicLocation(TimeStampedModel):
     user = models.ForeignKey('User', on_delete=models.DO_NOTHING)
     music = models.ForeignKey('Music', on_delete=models.DO_NOTHING)

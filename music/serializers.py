@@ -1,21 +1,10 @@
-from django.contrib.contenttypes.models import ContentType
-from rest_framework import serializers
+from rest_framework.serializers import ModelSerializer
+
+from music.models import MusicLocation
 
 
-from .models import User, Music, MusicLocation
-
-
-class UserSerializer(serializers.ModelSerializer):
+class MusicLocationSerializer(ModelSerializer):
     class Meta:
-        model = User
+        model = MusicLocation
         fields = '__all__'
-
-class MusicSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Music
-        fields = '__all__'
-
-
-
-class MusicLocadtionSerializer(serializers.ModelSerializer):
-    pass
+        depth = 1
