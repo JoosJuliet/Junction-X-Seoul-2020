@@ -16,11 +16,6 @@ class MusicSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class MusicLocationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MusicLocation
-        fields = '__all__'
-
 
 class MusicLocadtionSerializer(serializers.ModelSerializer):
     pass

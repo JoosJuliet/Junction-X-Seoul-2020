@@ -32,10 +32,10 @@ def _getBoundsFromLatLng(lat, lng):
     }
     return bounds
 # GET /musics
+@api_view(['GET'])
 def get_musics(request):
     longitude = request.GET.get('longitude')
     latitude = request.GET.get('latitude')
-
 
     if request.method == 'GET':
 
@@ -45,7 +45,8 @@ def get_musics(request):
             latitude__range=(LC['lat_min'], LC['lat_max'])
         ).filter(
             longitude__range=(LC['lng_min'], LC['lng_max'])
-        ).values_list('music__name', 'longitude', 'latitude')
+        ).values('music__name', 'longitude', 'latitude', 'modified')
+
     return HttpResponse(qs)
 
 
@@ -70,11 +71,5 @@ def post_user_memory(request, zeppeto_hash_code):
         return HttpResponse('success')
 
     if request.method == 'GET':
-        # GET	/users/{zeppeto_hash_code}/music
-        # 	request	longitude
-        # 		latitude
-        # 		sing_name
-        # 이거는내노래list보내주기
-        user = MusicLocation.objects.select_related('user').filter(user__zeppeto_hash_code=zeppeto_hash_code).values_list('music__name', 'user__musiclocation__latitude','music__musiclocation__longitude')
-        data = {'d':user[0]}
+        user = MusicLocation.objects.select_related('user').filter(user__zeppeto_hash_code=zeppeto_hash_code).values('music__name', 'user__musiclocation__latitude','music__musiclocation__longitude','modified')
         return Response(user)
