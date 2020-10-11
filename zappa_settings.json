@@ -5,6 +5,7 @@
         "profile_name": "default",
         "project_name": "mmm",
         "runtime": "python3.7",
-        "s3_bucket": "zappa-efsq84m2d"
+        "s3_bucket": "zappa-efsq84m2d",
+        "exclude" : ["_sqlite.so"]
     }
 }
